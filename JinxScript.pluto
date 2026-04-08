@@ -1,7 +1,7 @@
 local nativeFetchStartTime = util.current_time_millis()
 util.require_natives("3095a", "g")
 local nativeFetchEndTime = util.current_time_millis() - nativeFetchStartTime
-util.log($"[JinxScript.pluto] Found natives in {nativeFetchEndTime}ms")
+util.log($"[Heists4U.pluto] Found natives in {nativeFetchEndTime}ms")
 pluto_use "0.9.1"
 native_invoker.accept_bools_as_ints(true)
 
@@ -26,17 +26,17 @@ function scanForAddress(patternName, pattern, add)
 			local rip = memory.rip(scan + add)
 			if rip and rip ~= 0 then
 				sigCount = sigCount + 1
-				util.log($"[JinxScript.pluto] Found '{patternName}'")
+				util.log($"[Heists4U.pluto] Found '{patternName}'")
 				return rip
 			end
 		else
 			sigCount = sigCount + 1
-			util.log($"[JinxScript.pluto] Found '{patternName}'")
+			util.log($"[Heists4U.pluto] Found '{patternName}'")
 			return scan
 		end
 	end
 
-	util.log($"[JinxScript Error] Failed to find pattern '{patternName}'")
+	util.log($"[Heists4U Error] Failed to find pattern '{patternName}'")
 	util.stop_script()
 	failedScans[patternName] = true
 	return false
@@ -49,7 +49,7 @@ local CGameConfig = memory.read_long(memory.read_long(scanForAddress("GC", "48 8
 local ModifyControlsIfDucked = scanForAddress("MCID", "E8 ? ? ? ? F6 87 D8 00 00 00 07", 1)
 local CWeaponComponentSuppressor = scanForAddress("WCS", "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 80 7A 28 04")
 local sigscanEndTime = util.current_time_millis() - sigscanStartTime
-util.log($"[JinxScript.pluto] {sigCount} signatures scanned in {sigscanEndTime}ms")
+util.log($"[Heists4U.pluto] {sigCount} signatures scanned in {sigscanEndTime}ms")
 
 local invisibility = menu.ref_by_path("Self>Appearance>Invisibility")
 local levitation = menu.ref_by_path("Self>Movement>Levitation>Levitation")
@@ -866,11 +866,11 @@ function player_list(playerID)
 		local playerRoot = menu.player_root(playerID)
         menus[playerID] = players_list:list(players.get_name(playerID), {}, "", function()
 			if not hasLink[playerID] then
-		 		menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "JinxScript>Friendly"))
-				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "JinxScript>Trolling & Griefing"))
-				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "JinxScript>Anti-Godmode"))
-				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "JinxScript>Teleport Player"))
-				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "JinxScript>Miscellaneous"))
+		 		menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "Heists4U>Friendly"))
+				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "Heists4U>Trolling & Griefing"))
+				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "Heists4U>Anti-Godmode"))
+				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "Heists4U>Teleport Player"))
+				menus[playerID]:link(menu.ref_by_rel_path(playerRoot, "Heists4U>Miscellaneous"))
 				hasLink[playerID] = true
 			end
         end)
@@ -892,7 +892,7 @@ players.on_leave(handle_player_list)
 players.dispatch_on_join()
 
 if not SCRIPT_SILENT_START then
-	toast($"Hello, {SC_ACCOUNT_INFO_GET_NICKNAME()}!\nWelcome To JinxScript!\nOfficial Discord: https://discord.gg/hjs5S93kQv")
+	toast($"Hello, {SC_ACCOUNT_INFO_GET_NICKNAME()}!\nWelcome To Heists4U!\nOfficial Discord: https://discord.gg/hjs5S93kQv")
 end
 
 playerHealth = self:slider("Set Player Health", {"playerhealth"}, "", 160, 2147483647, 328, 1, function(health)
@@ -3665,13 +3665,13 @@ for id, data in weapon_stuff do
 	end)
 end
 
-local petJinx = funfeatures:list("Pet Jinx")
-petJinx:toggle("Pet Jinx", {}, "", function(toggled)
+local petJinx = funfeatures:list("Pet Heists4U")
+petJinx:toggle("Pet Heists4U", {}, "", function(toggled)
 	if toggled then
-		local jinx = joaat("a_c_cat_01")
-		util.request_model(jinx)
+		local Heists4U = joaat("a_c_cat_01")
+		util.request_model(Heists4U)
 		local pos = players.get_position(players.user())
-		jinxPed = entities.create_ped(28, jinx, pos, 0)
+		jinxPed = entities.create_ped(28, Heists4U, pos, 0)
 		entities.set_can_migrate(jinxPed, false)
 		SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(jinxPed, true)
 		SET_PED_COMPONENT_VARIATION(jinxPed, 0, 0, 1, 0)
@@ -3682,17 +3682,17 @@ petJinx:toggle("Pet Jinx", {}, "", function(toggled)
 	end
 end)
 
-petJinx:action("Find Jinx", {}, "", function()
+petJinx:action("Find Heists4U", {}, "", function()
 	local pos = players.get_position(players.user())
 	if jinxPed != nil then 
 		SET_ENTITY_COORDS_NO_OFFSET(jinxPed, pos, false, false, false)
 	else
-		toast("Jinx Wasn't Found. :(")
+		toast("Heists4U Wasn't Found. :(")
 	end
 end)
 
 misc:hyperlink("Join The Discord", "https://discord.gg/hjs5S93kQv", "Join the discord to get news on all the latest and upcoming updates.")
-local jinxCredits = credits:list("Jinx", {}, "The reason it's named JinxScript.")
+local jinxCredits = credits:list("Heists4U", {}, "The reason it's named Heists4U.")
 jinxCredits:hyperlink("Tiktok", "https://www.tiktok.com/@bigfootjinx")
 jinxCredits:hyperlink("Twitter", "https://twitter.com/bigfootjinx")
 jinxCredits:hyperlink("Instagram", "https://www.instagram.com/bigfootjinx")
@@ -3702,8 +3702,8 @@ credits:action("aaronlink127", {}, "helping me with a bunch of stuff I didn't qu
 credits:action("well in that case", {}, "for making my life so much easier by making Pluto", function() end)
 credits:action("Scriptcat", {}, "being there since I started and kept forcing me to start learning stands api and natives.", function() end)
 credits:action("Pedro9558", {}, "Contributed some stuff he made to be put into the script.", function() end)
-credits:action("ICYPhoenix", {}, "I would have never made this script or thought of making this script if he didn't change my role in the stand discord to \"OP Jinx Lua\".", function() end)
-credits:action("Drifter", {}, "buying me the domain jinxscript.dev <3.", function() end)
+credits:action("ICYPhoenix", {}, "I would have never made this script or thought of making this script if he didn't change my role in the stand discord to \"OP Heists4U Lua\".", function() end)
+credits:action("Drifter", {}, "buying me the domain Heists4U.dev <3.", function() end)
 
 misc:toggle("Debug Mode", {"debugmode"}, "Enables extra information as to why a feature didn't work as intended or debug notifications.", function(toggled)
 	isDebugMode = toggled
@@ -3713,11 +3713,11 @@ menu.apply_command_states()
 local function player(playerID) 
 	local name = players.get_name(playerID)
 	if playerID != players.user() and (name == "Prizuhm" or name == "Iinustechtips" or name == "Booleanaire") then
-		players.add_detection(playerID, "JinxScript Developer", TOAST_ALL, 1)
+		players.add_detection(playerID, "Heists4U Developer", TOAST_ALL, 1)
 	end
 
 	if not menu.player_root(playerID):isValid() then return end
-	local main = menu.list(menu.player_root(playerID), "JinxScript", {"JinxScript"}, "")
+	local main = menu.list(menu.player_root(playerID), "Heists4U", {"Heists4U"}, "")
 
 	friendly = main:list("Friendly", {}, "")
 	griefing = main:list("Trolling & Griefing", {}, "")
@@ -3727,13 +3727,13 @@ local function player(playerID)
 	trollingRoot = menu.ref_by_rel_path(menu.player_root(playerID), "Trolling")
 	trollingRoot:getChildren()[1]:attachBefore(trollingRoot:link(main):detach())
 
-	friendly:toggle_loop("Pet Jinx", {}, "", function()
+	friendly:toggle_loop("Pet Heists4U", {}, "", function()
 		local ped = GET_PLAYER_PED_SCRIPT_INDEX(playerID)
 		if not petJinxPlyr or not DOES_ENTITY_EXIST(petJinxPlyr) then
-			local jinx = joaat("a_c_cat_01")
-			util.request_model(jinx)
+			local Heists4U = joaat("a_c_cat_01")
+			util.request_model(Heists4U)
 			local pos = players.get_position(playerID)
-			petJinxPlyr = entities.create_ped(28, jinx, pos, 0)
+			petJinxPlyr = entities.create_ped(28, Heists4U, pos, 0)
 			entities.set_can_migrate(petJinxPlyr, false)
 			SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(petJinxPlyr, true)
 			SET_PED_COMPONENT_VARIATION(petJinxPlyr, 0, 0, 1, 0)
@@ -5142,9 +5142,9 @@ local function player(playerID)
 	end)
 end
 local featureCreateEndTime = util.current_time_millis() - featureCreateStartTime
-util.log($"[JinxScript.pluto] 334 Features created in {featureCreateEndTime}ms")
+util.log($"[Heists4U.pluto] 334 Features created in {featureCreateEndTime}ms")
 players.add_command_hook(player)
-util.log($"[JinxScript.pluto] Script loaded in {(nativeFetchEndTime + sigscanEndTime + featureCreateEndTime)}ms")
-util.log($"[JinxScript.pluto] Welcome to JinxScript, {SC_ACCOUNT_INFO_GET_NICKNAME()}")
-util.log($"[JinxScript.pluto] Discord: https://discord.gg/hjs5S93kQv")
-util.log($"[JinxScript.pluto] Website: https://jinxscript.dev")
+util.log($"[Heists4U.pluto] Script loaded in {(nativeFetchEndTime + sigscanEndTime + featureCreateEndTime)}ms")
+util.log($"[Heists4U.pluto] Welcome to Heists4U, {SC_ACCOUNT_INFO_GET_NICKNAME()}")
+util.log($"[Heists4U.pluto] Discord: https://discord.gg/hjs5S93kQv")
+util.log($"[Heists4U.pluto] Website: https://Heists4U.dev")
